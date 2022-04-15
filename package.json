@@ -1,0 +1,29 @@
+{
+  "name": "workflow-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^3.3.0",
+    "config": "^3.3.7",
+    "js-yaml": "^4.1.0",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-combine-routers": "^4.0.2",
+    "koa-json": "^2.0.2",
+    "koa-router": "^10.1.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.2",
+    "mongoose": "^6.3.0",
+    "mongoose-paginate-v2": "^1.6.3",
+    "nanoid": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
