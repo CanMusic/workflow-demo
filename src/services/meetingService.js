@@ -12,10 +12,6 @@ class MeetingService {
         return await Event.findById(id);
     }
 
-    async findFormByCode(code) {
-        return await Form.findOne({ code });
-    }
-
     async audit(form) {
         let event = await Event.create({
             title: form.title,
@@ -26,14 +22,9 @@ class MeetingService {
             createdBy: form.createdBy,
             ctx: { formCode: form.code }
         });
-        form.ctx.eventId = event._id;
 
-        await Form.create({
-            code: form.code,
-            type: 'createMeeting',
-            content: JSON.stringify(form),
-            ctx: { eventId: event._id }
-        });
+        form.ctx.eventId = event._id;
+        await form.save();
 
         return event;
     }
@@ -45,9 +36,7 @@ class MeetingService {
         event.state = 'success';
         event = await event.save();
 
-        let _form = await Form.findOne({ code: form.code });
-        _form.content = JSON.stringify(form);
-        _form.save();
+        await form.save();
 
         return event;
     }
@@ -59,9 +48,7 @@ class MeetingService {
         event.state = 'refuse';
         event = await event.save();
 
-        let _form = await Form.findOne({ code: form.code });
-        _form.content = JSON.stringify(form);
-        _form.save();
+        await form.save();
 
         return event;
     }

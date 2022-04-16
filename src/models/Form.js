@@ -6,6 +6,7 @@ const FormSchema = new Schema({
     code: { type: String, require: true },
     type: { type: String, enum: ['createMeeting', 'modifyMeeting', 'cancelMeeting'], required: true },
     content: { type: String },
+    createdBy: { type: String, required: true },
     ctx: {
         eventId: { type: String },
     }

@@ -51,7 +51,8 @@ router.post('/:id/agree', async (ctx) => {
 	let { comment } = ctx.request.body;
 
 	let event = await meetingService.findEventById(id);
-	let form = await meetingService.findFormByCode(event.ctx.formCode);
+
+	let form = await new CreateMeetingForm().load(event.ctx.formCode);
 	form.auditResult = true;
 	form.auditComment = comment;
 
@@ -67,14 +68,13 @@ router.post('/:id/reject', async (ctx) => {
 	let { comment } = ctx.request.body;
 
 	let event = await meetingService.findEventById(id);
-	let form = await meetingService.findFormByCode(event.ctx.formCode);
 
-	let createMeetingForm = JSON.parse(form.content);
-	createMeetingForm.auditResult = false;
-	createMeetingForm.auditComment = comment;
+	let form = await new CreateMeetingForm().load(event.ctx.formCode);
+	form.auditResult = false;
+	form.auditComment = comment;
 
 	let workflow = new CreateMeetingWorkflow(event.state);
-	event = await workflow.transition(createMeetingForm);
+	event = await workflow.transition(form);
 
 	ctx.body = event;
 	ctx.status = 201;
