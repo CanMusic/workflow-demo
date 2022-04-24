@@ -18,7 +18,15 @@ const router = new Router({ prefix: '/views' });
 router.get('/meetings', async (ctx) => {
 	let res = await http.get('/meetings');
 	let resBody = res.data;
-	await ctx.render('list', { backend_origin, meetings: resBody });
+	await ctx.render('meetings', { backend_origin, meetings: resBody });
+});
+
+router.post('/meetings', async (ctx) => {
+	let body = ctx.request.body;
+	body.beginAt = moment(body.beginAt).unix();
+	body.endAt = moment(body.endAt).unix();
+	await http.post('/meetings', body);
+	ctx.redirect('/views/meetings');
 });
 
 router.get('/meetings/create', async (ctx) => {
@@ -32,11 +40,18 @@ router.get('/meetings/:id', async (ctx) => {
 	await ctx.render('meeting', { backend_origin, meeting: resBody });
 });
 
-router.post('/meetings', async (ctx) => {
+router.get('/meetings/:id/audit', async (ctx) => {
+	let id = ctx.request.params.id;
+	let res = await http.get(`/meetings/${id}`);
+	let resBody = res.data;
+	await ctx.render('audit', { backend_origin, meeting: resBody });
+});
+
+router.post('/meetings/:id/audit', async (ctx) => {
+	let id = ctx.request.params.id;
 	let body = ctx.request.body;
-	body.beginAt = moment(body.beginAt).unix();
-	body.endAt = moment(body.endAt).unix();
-	await http.post('/meetings', body);
+	if (body.result == 'true') await http.post(`/meetings/${id}/agree`, body);
+	else await http.post(`/meetings/${id}/reject`, body);
 	ctx.redirect('/views/meetings');
 });
 
