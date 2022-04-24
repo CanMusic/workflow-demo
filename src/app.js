@@ -17,7 +17,6 @@ class App {
     }
 
     async initDB() {
-        return;
         await Event.deleteMany({});
         await Form.deleteMany({});
         await Resource.deleteMany({});

@@ -7,7 +7,7 @@ var options = { discriminatorKey: 'type' };
 
 const Resource = mongoose.model('Resource', new Schema({
     name: { type: String, required: true, index: true },
-    code: { type: String, required: true, index: true, default: nanoid() },
+    code: { type: String, required: true, index: true, default() { return nanoid(); }, unique: true },
     calendar: { type: ObjectId, ref: 'Calendar' },
     enabled: { type: Boolean, required: true, default: true },
     description: { type: String },

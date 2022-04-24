@@ -2,33 +2,17 @@ const { result } = require('lodash');
 const _ = require('lodash');
 const moment = require('moment');
 const { Meeting } = require('../models/Event.js');
-let { CreateMeetingForm } = require('../models/Form');
 
 class MeetingService {
     constructor() {
     }
 
     async findAllMeetings() {
-        return await Meeting.find({});
+        return await Meeting.find({}).populate({ path: 'room', select: 'name code' });
     }
 
     async findMeetingById(id) {
-        return await Meeting.findById(id);
-    }
-
-    async findCreateMeetingFormByCode(code) {
-        return await CreateMeetingForm.findOne({ code });
-    }
-
-    async saveForm(data) {
-        return await CreateMeetingForm.create({
-            title: data.title,
-            beginAt: data.beginAt,
-            endAt: data.endAt,
-            room: 'A101',
-            createdBy: 'cwj',
-            needAudit: true
-        });
+        return await Meeting.findById(id).populate({ path: 'room', select: 'name code' });
     }
 
     async audit(form) {

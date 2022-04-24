@@ -12,7 +12,7 @@
 <body>
     <h1>会议详情</h1>
     <p>会议主题: {{meeting.title}}</p>
-    <p>会议地点: {{meeting.room}}</p>
+    <p>会议地点: {{meeting.room.name}}</p>
     <p>开始时间: {{formatDate meeting.beginAt}}</p>
     <p>结束时间: {{formatDate meeting.endAt}}</p>
     <p>会议状态: {{meeting.state}}</p>

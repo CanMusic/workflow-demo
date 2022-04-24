@@ -5,52 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>会议列表</title>
+    <title>表单列表</title>
     <link rel="stylesheet" href="{{backend_origin}}/stylesheets/style.css">
 </head>
 
 <body>
-    <h1>会议列表</h1>
+    <h1>表单列表</h1>
     <p>
         <a href="{{backend_origin}}/views">
             <button>首页</button>
         </a>
     </p>
     <p>
-        <a href="{{backend_origin}}/views/meetings/create">
-            <button>创建会议</button>
-        </a>
-    </p>
-    <p>
     <table border="1">
         <tr>
-            <th>主题</th>
-            <th>地点</th>
-            <th>开始时间</th>
-            <th>结束时间</th>
-            <th>会议状态</th>
-            <th>是否生效</th>
+            <th>单号</th>
             <th>创建人</th>
             <th>创建时间</th>
             <th>修改时间</th>
             <th>操作</th>
         </tr>
-        {{#each meetings}}
+        {{#each forms}}
         <tr>
-            <td>{{this.title}}</td>
-            <td>{{this.room.name}}</td>
-            <td>{{formatDate this.beginAt}}</td>
-            <td>{{formatDate this.endAt}}</td>
-            <td>{{this.state}}</td>
-            <td>{{this.enabled}}</td>
+            <td>{{this.code}}</td>
             <td>{{this.createdBy}}</td>
             <td>{{formatDate this.createdAt}}</td>
             <td>{{formatDate this.updatedAt}}</td>
             <td>
-                <a href="{{backend_origin}}/views/meetings/{{this.id}}">详情</a>
-                {{#if (needAudit this.state)}}
-                <a href="{{backend_origin}}/views/meetings/{{this.id}}/audit">审核</a>
-                {{/if}}
+                <a href="{{backend_origin}}/views/forms/{{this.id}}">详情</a>
             </td>
         </tr>
         {{else}}

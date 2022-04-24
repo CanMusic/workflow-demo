@@ -4,6 +4,7 @@ const Router = require('koa-router');
 let CreateMeetingWorkflow = require('../workflows/createMeetingWorkflow.js');
 
 let meetingService = require('../services/meetingService.js');
+let formService = require('../services/formService.js');
 
 const router = new Router({ prefix: '/meetings' });
 
@@ -21,8 +22,7 @@ router.get('/:id', async (ctx) => {
 router.post('/', async (ctx) => {
 	let body = ctx.request.body;
 
-	let form = await meetingService.saveForm(body);
-
+	let form = await formService.saveCreateMeetingForm(body);
 	let workflow = new CreateMeetingWorkflow();
 	let meeting = await workflow.transition(form);
 
@@ -46,7 +46,7 @@ router.post('/:id/agree', async (ctx) => {
 	let { comment } = ctx.request.body;
 
 	let meeting = await meetingService.findMeetingById(id);
-	let form = await meetingService.findCreateMeetingFormByCode(meeting.ctx.formCode);
+	let form = await formService.findCreateMeetingFormByCode(meeting.ctx.formCode);
 	form.auditResult = true;
 	form.auditComment = comment;
 	form.auditBy = 'nonocast';
@@ -64,7 +64,7 @@ router.post('/:id/reject', async (ctx) => {
 	let { comment } = ctx.request.body;
 
 	let meeting = await meetingService.findMeetingById(id);
-	let form = await meetingService.findCreateMeetingFormByCode(meeting.ctx.formCode);
+	let form = await formService.findCreateMeetingFormByCode(meeting.ctx.formCode);
 	form.auditResult = false;
 	form.auditComment = comment;
 	form.auditBy = 'nonocast';

@@ -6,11 +6,10 @@ const { ObjectId } = Schema.Types;
 var options = { discriminatorKey: 'type' };
 
 const Event = mongoose.model('Event', new Schema({
-    code: { type: String, required: true, index: true, default: nanoid() },
+    code: { type: String, required: true, index: true, default() { return nanoid(); }, unique: true },
     beginAt: { type: Number, required: true },
     endAt: { type: Number, required: true },
     rrule: { type: String },
-    resource: { type: ObjectId, ref: 'Resource' },
     createdBy: { type: String, required: true },
     enabled: { type: Boolean, required: true },
     ctx: {
@@ -20,17 +19,17 @@ const Event = mongoose.model('Event', new Schema({
 
 const Meeting = Event.discriminator('Meeting', new Schema({
     title: { type: String, required: true },
-    room: { type: String, required: true },
+    room: { type: ObjectId, ref: 'Room' },
     state: { type: String },
 }, options));
 
 const DeskBooking = Event.discriminator('DeskBooking', new Schema({
-    desk: { type: String, required: true },
+    desk: { type: ObjectId, ref: 'Desk' },
     state: { type: String },
 }, options));
 
 const Visit = Event.discriminator('Visit', new Schema({
-    interviewee: { type: String, required: true },
+    interviewee: { type: ObjectId, ref: 'User' },
     visitor: { type: String, required: true },
 }, options));
 

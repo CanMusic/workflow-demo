@@ -12,6 +12,8 @@ const koaMount = require('koa-mount');
 const basic = require('./routers/basic.js');
 const views = require('./routers/views.js');
 const meetings = require('./routers/meetings.js');
+const resources = require('./routers/resources.js');
+const forms = require('./routers/forms.js');
 
 class WebServer {
     constructor() {
@@ -30,6 +32,8 @@ class WebServer {
         koa.use(basic.routes());
         koa.use(views.routes());
         koa.use(meetings.routes());
+        koa.use(resources.routes());
+        koa.use(forms.routes());
 
         koa.on('error', (error, ctx) => {
             console.log('koa encounter error :', error);

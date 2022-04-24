@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>表单详情</title>
+    <link rel="stylesheet" href="{{backend_origin}}/stylesheets/style.css">
+</head>
+
+<body>
+    <h1>表单详情</h1>
+    <p>表单号: {{form.code}}</p>
+    <p>创建人: {{form.createdBy}}</p>
+    <p>创建时间: {{formatDate form.createdAt}}</p>
+    <p>修改时间: {{formatDate form.updatedAt}}</p>
+    <p>
+        <a href="{{backend_origin}}/views/forms">
+            <button>返回表单列表</button>
+        </a>
+    </p>
+</body>
+
+</html>

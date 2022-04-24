@@ -15,10 +15,14 @@ handlebars.registerHelper('needAudit', (state) => {
 
 const router = new Router({ prefix: '/views' });
 
+router.get('/', async (ctx) => {
+	await ctx.render('debug', { backend_origin });
+});
+
 router.get('/meetings', async (ctx) => {
 	let res = await http.get('/meetings');
-	let resBody = res.data;
-	await ctx.render('meetings', { backend_origin, meetings: resBody });
+	let meetings = res.data;
+	await ctx.render('meetings', { backend_origin, meetings });
 });
 
 router.post('/meetings', async (ctx) => {
@@ -30,21 +34,23 @@ router.post('/meetings', async (ctx) => {
 });
 
 router.get('/meetings/create', async (ctx) => {
-	await ctx.render('create', { backend_origin });
+	let res = await http.get('/resources/room');
+	let rooms = res.data;
+	await ctx.render('create', { backend_origin, rooms });
 });
 
 router.get('/meetings/:id', async (ctx) => {
 	let id = ctx.request.params.id;
 	let res = await http.get(`/meetings/${id}`);
-	let resBody = res.data;
-	await ctx.render('meeting', { backend_origin, meeting: resBody });
+	let meeting = res.data;
+	await ctx.render('meeting', { backend_origin, meeting });
 });
 
 router.get('/meetings/:id/audit', async (ctx) => {
 	let id = ctx.request.params.id;
 	let res = await http.get(`/meetings/${id}`);
-	let resBody = res.data;
-	await ctx.render('audit', { backend_origin, meeting: resBody });
+	let meeting = res.data;
+	await ctx.render('audit', { backend_origin, meeting });
 });
 
 router.post('/meetings/:id/audit', async (ctx) => {
@@ -53,6 +59,19 @@ router.post('/meetings/:id/audit', async (ctx) => {
 	if (body.result == 'true') await http.post(`/meetings/${id}/agree`, body);
 	else await http.post(`/meetings/${id}/reject`, body);
 	ctx.redirect('/views/meetings');
+});
+
+router.get('/forms', async (ctx) => {
+	let res = await http.get('/forms');
+	let forms = res.data;
+	await ctx.render('forms', { backend_origin, forms });
+});
+
+router.get('/forms/:id', async (ctx) => {
+	let id = ctx.request.params.id;
+	let res = await http.get(`/forms/${id}`);
+	let form = res.data;
+	await ctx.render('form', { backend_origin, form });
 });
 
 module.exports = router;
