@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>会议列表</title>
+    <link rel="stylesheet" href="{{backend_origin}}/stylesheets/style.css">
+</head>
+
+<body>
+    <h1>Meetings</h1>
+    <a href="{{backend_origin}}/views/meetings/create">
+        <button>创建会议</button>
+    </a>
+    <p>
+    <table border="1">
+        <tr>
+            <th>主题</th>
+            <th>地点</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>会议状态</th>
+            <th>是否生效</th>
+            <th>创建人</th>
+            <th>创建时间</th>
+            <th>修改时间</th>
+            <th>操作</th>
+        </tr>
+        {{#each meetings}}
+        <tr>
+            <td>{{this.title}}</td>
+            <td>{{this.room}}</td>
+            <td>{{formatDate this.beginAt}}</td>
+            <td>{{formatDate this.endAt}}</td>
+            <td>{{this.state}}</td>
+            <td>{{this.enabled}}</td>
+            <td>{{this.createdBy}}</td>
+            <td>{{formatDate this.createdAt}}</td>
+            <td>{{formatDate this.updatedAt}}</td>
+            <td>
+                <a href="{{backend_origin}}/views/meetings/{{this.id}}">详情</a>
+                {{#if (needAudit this.state)}}
+                <a href="{{backend_origin}}/views/meetings/{{this.id}}/audit">审核</a>
+                {{/if}}
+            </td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="10">No content</td>
+        </tr>
+        {{/each}}
+
+    </table>
+    </p>
+</body>
+
+</html>

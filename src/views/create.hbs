@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>创建会议表单</title>
+    <link rel="stylesheet" href="{{backend_origin}}/stylesheets/style.css">
+</head>
+
+<body>
+    <h1>创建会议表单</h1>
+    <form action="{{backend_origin}}/views/meetings" method="post">
+        <p>会议主题: <input type="text" name="title" /></p>
+        <p>会议地点: <input type="text" name="room" /></p>
+        <p>开始时间: <input type="datetime" name="beginAt" value="2022-04-23 12:00:00" /></p>
+        <p>结束时间: <input type="datetime" name="endAt" value="2022-04-23 13:00:00" /></p>
+        <input type="submit" value="创建" />
+    </form>
+
+    <p>
+        <a href="{{backend_origin}}/views/meetings">
+            <button>返回会议列表</button>
+        </a>
+    </p>
+</body>
+
+</html>

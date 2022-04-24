@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const moment = require('moment');
-const BaseForm = require('./forms/baseForm');
 
 class BaseWorkflow {
     constructor(state) {
@@ -10,8 +9,7 @@ class BaseWorkflow {
 
     async transition(form) {
         if (!form) throw new Error('Form is required.');
-        if (!(form instanceof BaseForm)) throw new Error('Form is not BaseForm.');
-        let action = form.extractAction();
+        let action = form.extractAction(form);
         let item = _.find(this.fsm, p => {
             return p.action == action && p.from == this.state;
         });
@@ -20,7 +18,6 @@ class BaseWorkflow {
         this.state = item.to;
         return await item.fire(form);
     }
-
 }
 
 module.exports = BaseWorkflow;
