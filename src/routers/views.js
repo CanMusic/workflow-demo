@@ -29,8 +29,13 @@ router.post('/meetings', async (ctx) => {
 	let body = ctx.request.body;
 	body.beginAt = moment(body.beginAt).unix();
 	body.endAt = moment(body.endAt).unix();
-	await http.post('/meetings', body);
-	ctx.redirect('/views/meetings');
+	try {
+		await http.post('/meetings', body);
+		ctx.status = 200;
+	} catch (error) {
+		ctx.body = error.response.data;
+		ctx.status = error.response.status;
+	}
 });
 
 router.get('/meetings/create', async (ctx) => {

@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-let resourceService = require('../services/resourceService');
+let resourceService = require('../services/ResourceService');
 
 const router = new Router({ prefix: '/resources' });
 

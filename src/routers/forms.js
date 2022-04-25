@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-let formService = require('../services/formService');
+let formService = require('../services/FormService');
 
 const router = new Router({ prefix: '/forms' });
 

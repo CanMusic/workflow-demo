@@ -1,8 +1,10 @@
 const _ = require('lodash');
 const moment = require('moment');
-let meetingService = require('../services/meetingService.js');
-let notifyService = require('../services/notifyService.js');
-const BaseWorkflow = require('./baseWorkflow.js');
+let meetingService = require('../services/MeetingService');
+let calendarService = require('../services/CalendarService');
+let notifyService = require('../services/NotifyService');
+const BaseWorkflow = require('./baseWorkflow');
+const ServerError = require('../misc/ServerError');
 
 // states: [init, audit, success, refused]
 // init -> success
@@ -21,19 +23,37 @@ class CreateMeetingWorkflow extends BaseWorkflow {
     }
 
     async _onAudit(form) {
+        let calendar = await calendarService.findOrCreateByResoucesId(form.room);
+        let hitTest = await calendarService.hitTest({
+            calendarId: calendar._id,
+            beginAt: form.beginAt,
+            endAt: form.endAt
+        });
+        if (hitTest) throw new ServerError(403, '时间冲突');
+
         let result = await meetingService.audit(form);
+        form.ctx.eventId = result._id;
+        await form.save();
+
+        calendar.events.push(result);
+        await calendar.save();
+
         await notifyService.notify('待审核');
         return result;
     }
 
     async _onSuccess(form) {
         let result = await meetingService.success(form);
+        await form.save();
+
         await notifyService.notify('预订成功');
         return result;
     }
 
     async _onRefused(form) {
         let result = await meetingService.refuse(form);
+        await form.save();
+
         await notifyService.notify('审核不通过');
         return result;
     }

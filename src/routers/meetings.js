@@ -3,8 +3,8 @@ const Router = require('koa-router');
 
 let CreateMeetingWorkflow = require('../workflows/createMeetingWorkflow.js');
 
-let meetingService = require('../services/meetingService.js');
-let formService = require('../services/formService.js');
+let meetingService = require('../services/MeetingService.js');
+let formService = require('../services/FormService.js');
 
 const router = new Router({ prefix: '/meetings' });
 

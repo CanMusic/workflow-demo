@@ -27,9 +27,6 @@ class MeetingService {
             ctx: { formCode: form.code }
         });
 
-        form.ctx.eventId = event._id;
-        await form.save();
-
         return event;
     }
 
@@ -40,8 +37,6 @@ class MeetingService {
         event.state = 'success';
         event = await event.save();
 
-        await form.save();
-
         return event;
     }
 
@@ -51,8 +46,6 @@ class MeetingService {
         event.enabled = false;
         event.state = 'refuse';
         event = await event.save();
-
-        await form.save();
 
         return event;
     }

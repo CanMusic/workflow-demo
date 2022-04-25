@@ -14,6 +14,7 @@ const views = require('./routers/views.js');
 const meetings = require('./routers/meetings.js');
 const resources = require('./routers/resources.js');
 const forms = require('./routers/forms.js');
+const errorHandler = require('./routers/errorHandler.js');
 
 class WebServer {
     constructor() {
@@ -29,15 +30,13 @@ class WebServer {
         koa.use(koaMount('/', koaStatic(path.join(__dirname, 'public'))));
         koa.use(koaJson());
         koa.use(koaBodyParser());
+        koa.use(errorHandler);
         koa.use(basic.routes());
         koa.use(views.routes());
         koa.use(meetings.routes());
         koa.use(resources.routes());
         koa.use(forms.routes());
-
-        koa.on('error', (error, ctx) => {
-            console.log('koa encounter error :', error);
-        });
+        
 
         this.koa = koa;
         this.server = null;
