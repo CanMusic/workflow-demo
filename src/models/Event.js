@@ -11,21 +11,16 @@ const Event = mongoose.model('Event', new Schema({
     endAt: { type: Number, required: true },
     rrule: { type: String },
     createdBy: { type: String, required: true },
-    enabled: { type: Boolean, required: true },
-    ctx: {
-        formCode: { type: String },
-    },
 }, options), 'events');
 
 const Meeting = Event.discriminator('Meeting', new Schema({
     title: { type: String, required: true },
     room: { type: ObjectId, ref: 'Room' },
-    state: { type: String },
+    formCode: { type: String },
 }, options));
 
 const DeskBooking = Event.discriminator('DeskBooking', new Schema({
     desk: { type: ObjectId, ref: 'Desk' },
-    state: { type: String },
 }, options));
 
 const Visit = Event.discriminator('Visit', new Schema({

@@ -7,11 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>审核会议表单</title>
     <link rel="stylesheet" href="{{backend_origin}}/stylesheets/style.css">
+    <script src="{{backend_origin}}/jquery.min.js"></script>
+    <script language="javascript">
+        $(function () {
+            $('#form').on('submit', function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function (data, textStatus, jqXHR) {
+                        window.location.href = "{{backend_origin}}/views/meetingforms";
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        alert(xhr.status + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
     <h1>审核会议表单</h1>
-    <form action="{{backend_origin}}/views/meetings/{{meeting.id}}/audit" method="post">
+    <form id="form" action="{{backend_origin}}/views/meetingforms/{{meeting.id}}/audit" method="post">
         <p>审核结果:
             <input type="radio" name="result" value="true" /><label for="true">同意</label>
             <input type="radio" name="result" value="false" /><label for="false">拒绝</label>
@@ -21,8 +40,8 @@
     </form>
 
     <p>
-        <a href="{{backend_origin}}/views/meetings">
-            <button>返回会议列表</button>
+        <a href="{{backend_origin}}/views/meetingforms">
+            <button>返回表单列表</button>
         </a>
     </p>
 </body>

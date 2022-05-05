@@ -17,9 +17,26 @@
         </a>
     </p>
     <p>
+        <a href="{{backend_origin}}/views/meetingforms/create">
+            <button>创建会议</button>
+        </a>
+    </p>
+    <p>
     <table border="1">
         <tr>
             <th>单号</th>
+
+            <th>会议主题</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>会议室</th>
+            <th>状态</th>
+
+            <th>审核结果</th>
+            <th>审核意见</th>
+            <th>审核人</th>
+            <th>审核时间</th>
+
             <th>创建人</th>
             <th>创建时间</th>
             <th>修改时间</th>
@@ -28,11 +45,38 @@
         {{#each forms}}
         <tr>
             <td>{{this.code}}</td>
+            {{#if (isCreateMeetingForm this)}}
+            <td>{{this.title}}</td>
+            <td>{{this.beginAt}}</td>
+            <td>{{this.endAt}}</td>
+            <td>{{this.room}}</td>
+            <td>{{this.state}}</td>
+            {{#if (hasAudit this.auditData)}}
+            <td>{{this.auditData.result}}</td>
+            <td>{{this.auditData.comment}}</td>
+            <td>{{this.auditData.auditedBy}}</td>
+            <td>{{this.auditData.auditedAt}}</td>
+            {{else}}
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            {{/if}}
+            {{else}}
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            {{/if}}
             <td>{{this.createdBy}}</td>
             <td>{{formatDate this.createdAt}}</td>
             <td>{{formatDate this.updatedAt}}</td>
             <td>
-                <a href="{{backend_origin}}/views/forms/{{this.id}}">详情</a>
+                <a href="{{backend_origin}}/views/meetingforms/{{this.id}}">详情</a>
+                {{#if (needAudit this.state)}}
+                <a href="{{backend_origin}}/views/meetingforms/{{this.id}}/audit">审核</a>
+                {{/if}}
             </td>
         </tr>
         {{else}}
@@ -40,7 +84,6 @@
             <td colspan="10">No content</td>
         </tr>
         {{/each}}
-
     </table>
     </p>
 </body>

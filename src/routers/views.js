@@ -13,6 +13,15 @@ handlebars.registerHelper('needAudit', (state) => {
 	return state == 'audit';
 });
 
+handlebars.registerHelper('hasAudit', (auditData) => {
+	return auditData != null;
+});
+
+handlebars.registerHelper('isCreateMeetingForm', (form) => {
+	console.dir(form);
+	return form.type == 'CreateMeeting';
+});
+
 const router = new Router({ prefix: '/views' });
 
 router.get('/', async (ctx) => {
@@ -25,25 +34,6 @@ router.get('/meetings', async (ctx) => {
 	await ctx.render('meetings', { backend_origin, meetings });
 });
 
-router.post('/meetings', async (ctx) => {
-	let body = ctx.request.body;
-	body.beginAt = moment(body.beginAt).unix();
-	body.endAt = moment(body.endAt).unix();
-	try {
-		await http.post('/meetings', body);
-		ctx.status = 200;
-	} catch (error) {
-		ctx.body = error.response.data;
-		ctx.status = error.response.status;
-	}
-});
-
-router.get('/meetings/create', async (ctx) => {
-	let res = await http.get('/resources/room');
-	let rooms = res.data;
-	await ctx.render('create', { backend_origin, rooms });
-});
-
 router.get('/meetings/:id', async (ctx) => {
 	let id = ctx.request.params.id;
 	let res = await http.get(`/meetings/${id}`);
@@ -51,32 +41,61 @@ router.get('/meetings/:id', async (ctx) => {
 	await ctx.render('meeting', { backend_origin, meeting });
 });
 
-router.get('/meetings/:id/audit', async (ctx) => {
-	let id = ctx.request.params.id;
-	let res = await http.get(`/meetings/${id}`);
-	let meeting = res.data;
-	await ctx.render('audit', { backend_origin, meeting });
-});
 
-router.post('/meetings/:id/audit', async (ctx) => {
-	let id = ctx.request.params.id;
-	let body = ctx.request.body;
-	if (body.result == 'true') await http.post(`/meetings/${id}/agree`, body);
-	else await http.post(`/meetings/${id}/reject`, body);
-	ctx.redirect('/views/meetings');
-});
-
-router.get('/forms', async (ctx) => {
-	let res = await http.get('/forms');
+router.get('/meetingforms', async (ctx) => {
+	let res = await http.get('/meetingforms');
 	let forms = res.data;
 	await ctx.render('forms', { backend_origin, forms });
 });
 
-router.get('/forms/:id', async (ctx) => {
+router.get('/meetingforms/create', async (ctx) => {
+	let res = await http.get('/resources/room');
+	let rooms = res.data;
+	await ctx.render('create', { backend_origin, rooms });
+});
+
+router.get('/meetingforms/:id', async (ctx) => {
 	let id = ctx.request.params.id;
-	let res = await http.get(`/forms/${id}`);
+	let res = await http.get(`/meetingforms/${id}`);
 	let form = res.data;
 	await ctx.render('form', { backend_origin, form });
+});
+
+router.post('/meetingforms', async (ctx) => {
+	let body = ctx.request.body;
+	body.beginAt = moment(body.beginAt).unix();
+	body.endAt = moment(body.endAt).unix();
+	let res = await http.post('/meetingforms', body);
+	if (res.data.result == false) {
+		ctx.status = res.data.errorCode;
+		ctx.body = res.data.message;
+		return;
+	}
+	ctx.status = 200;
+});
+
+router.get('/meetingforms/:id/audit', async (ctx) => {
+	let id = ctx.request.params.id;
+	let res = await http.get(`/meetingforms/${id}`);
+	let meeting = res.data;
+	await ctx.render('audit', { backend_origin, meeting });
+});
+
+router.post('/meetingforms/:id/audit', async (ctx) => {
+	let id = ctx.request.params.id;
+	let body = ctx.request.body;
+	if (body.result == 'true') {
+		let res = await http.post(`/meetingforms/${id}/agree`, body);
+		if (res.data.result == false) {
+			ctx.status = res.data.errorCode;
+			ctx.body = res.data.message;
+			return;
+		}
+	}
+	else {
+		await http.post(`/meetingforms/${id}/reject`, body);
+	}
+	ctx.redirect('/views/meetingforms');
 });
 
 module.exports = router;

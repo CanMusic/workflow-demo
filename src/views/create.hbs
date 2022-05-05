@@ -17,7 +17,7 @@
                     type: $(this).attr('method'),
                     data: $(this).serialize(),
                     success: function (data, textStatus, jqXHR) {
-                        alert('创建成功');
+                        window.location.href="{{backend_origin}}/views/meetingforms";
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         alert(xhr.status + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
@@ -30,12 +30,12 @@
 
 <body>
     <h1>创建会议表单</h1>
-    <form id="form" action="{{backend_origin}}/views/meetings" method="post">
+    <form id="form" action="{{backend_origin}}/views/meetingforms" method="post">
         <p>会议主题: <input type="text" name="title" /></p>
         <p>会议地点:
-            <select name="room">
+            <select name="roomCode">
                 {{#each rooms}}
-                <option value="{{this.id}}">{{this.name}}</option>
+                <option value="{{this.code}}">{{this.name}}</option>
                 {{/each}}
             </select>
         </p>
@@ -45,8 +45,8 @@
     </form>
 
     <p>
-        <a href="{{backend_origin}}/views/meetings">
-            <button>返回会议列表</button>
+        <a href="{{backend_origin}}/views/meetingforms">
+            <button>返回表单列表</button>
         </a>
     </p>
 </body>

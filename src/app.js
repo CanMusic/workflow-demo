@@ -20,7 +20,7 @@ class App {
         await Event.deleteMany({});
         await Form.deleteMany({});
         await Resource.deleteMany({});
-        
+
         await User.create({
             name: 'admin',
             description: '管理员',
@@ -30,12 +30,25 @@ class App {
         });
         await Room.create({
             name: 'Room101',
+            code: 'A101',
             description: '101会议室',
             building: '宝石园20号楼',
             floor: '24楼',
             capacity: 30,
             deviceTag: '电子白板,投影机',
             bookable: true,
+            needAudit: true,
+        });
+        await Room.create({
+            name: 'Room202',
+            code: 'A202',
+            description: '202会议室',
+            building: '宝石园20号楼',
+            floor: '24楼',
+            capacity: 5,
+            deviceTag: '电视机',
+            bookable: true,
+            needAudit: false,
         });
         await Desk.create({
             name: '工位1',

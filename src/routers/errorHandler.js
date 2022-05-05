@@ -3,9 +3,10 @@ let handler = async (ctx, next) => {
     const { statusCode, message } = err;
 
     ctx.type = 'json';
-    ctx.status = statusCode || 500;
+    ctx.status = 200;
     ctx.body = {
       result: false,
+      errorCode: statusCode,
       message
     };
 

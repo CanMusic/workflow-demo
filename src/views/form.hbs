@@ -12,11 +12,24 @@
 <body>
     <h1>表单详情</h1>
     <p>表单号: {{form.code}}</p>
+    {{#if (isCreateMeetingForm form)}}
+    <p>会议主题: {{form.title}}</p>
+    <p>开始时间: {{form.beginAt}}</p>
+    <p>结束时间: {{form.endAt}}</p>
+    <p>会议室: {{form.room}}</p>
+    <p>状态: {{form.state}}</p>
+    {{#if (hasAudit form.auditData)}}
+    <p>审核结果: {{form.auditData.result}}</p>
+    <p>审核意见: {{form.auditData.comment}}</p>
+    <p>审核人: {{form.auditData.auditedBy}}</p>
+    <p>审核时间: {{form.auditData.auditedAt}}</p>
+    {{/if}}
+    {{/if}}
     <p>创建人: {{form.createdBy}}</p>
     <p>创建时间: {{formatDate form.createdAt}}</p>
     <p>修改时间: {{formatDate form.updatedAt}}</p>
     <p>
-        <a href="{{backend_origin}}/views/forms">
+        <a href="{{backend_origin}}/views/meetingforms">
             <button>返回表单列表</button>
         </a>
     </p>

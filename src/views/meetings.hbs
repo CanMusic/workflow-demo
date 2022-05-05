@@ -17,23 +17,15 @@
         </a>
     </p>
     <p>
-        <a href="{{backend_origin}}/views/meetings/create">
-            <button>创建会议</button>
-        </a>
-    </p>
-    <p>
     <table border="1">
         <tr>
             <th>主题</th>
             <th>地点</th>
             <th>开始时间</th>
             <th>结束时间</th>
-            <th>会议状态</th>
-            <th>是否生效</th>
             <th>创建人</th>
             <th>创建时间</th>
             <th>修改时间</th>
-            <th>操作</th>
         </tr>
         {{#each meetings}}
         <tr>
@@ -41,17 +33,9 @@
             <td>{{this.room.name}}</td>
             <td>{{formatDate this.beginAt}}</td>
             <td>{{formatDate this.endAt}}</td>
-            <td>{{this.state}}</td>
-            <td>{{this.enabled}}</td>
             <td>{{this.createdBy}}</td>
             <td>{{formatDate this.createdAt}}</td>
             <td>{{formatDate this.updatedAt}}</td>
-            <td>
-                <a href="{{backend_origin}}/views/meetings/{{this.id}}">详情</a>
-                {{#if (needAudit this.state)}}
-                <a href="{{backend_origin}}/views/meetings/{{this.id}}/audit">审核</a>
-                {{/if}}
-            </td>
         </tr>
         {{else}}
         <tr>

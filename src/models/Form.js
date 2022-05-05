@@ -8,9 +8,7 @@ var options = { discriminatorKey: 'type' };
 const Form = mongoose.model('Form', new Schema({
     code: { type: String, require: true, default() { return nanoid(); }, unique: true },
     createdBy: { type: String, required: true },
-    ctx: {
-        eventId: { type: String },
-    }
+    isOpen: { type: Boolean, required: true, default: true },
 }, options), 'forms');
 
 const CreateMeetingForm = Form.discriminator('CreateMeeting', new Schema({
@@ -18,11 +16,14 @@ const CreateMeetingForm = Form.discriminator('CreateMeeting', new Schema({
     beginAt: { type: Number, require: true },
     endAt: { type: Number, require: true },
     room: { type: ObjectId, ref: 'Room', require: true },
-    needAudit: { type: Boolean, require: true },
-    auditResult: { type: Boolean },
-    auditComment: { type: String },
-    auditBy: { type: String },
-    auditAt: { type: Number },
+    state: { type: String, required: true },
+    auditData: {
+        result: { type: Boolean },
+        comment: { type: String },
+        auditedBy: { type: String },
+        auditedAt: { type: Number },
+    },
+    eventId: { type: String },
 }, options));
 
 CreateMeetingForm.prototype.extractAction = (form) => {

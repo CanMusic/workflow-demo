@@ -25,6 +25,7 @@ const Room = Resource.discriminator('Room', new Schema({
     capacity: { type: Number },
     deviceTag: { type: String },
     bookable: { type: Boolean, required: true, default: true },
+    needAudit: { type: Boolean, require: true },
 }, options));
 
 const Desk = Resource.discriminator('Desk', new Schema({

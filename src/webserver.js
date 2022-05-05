@@ -13,7 +13,7 @@ const basic = require('./routers/basic.js');
 const views = require('./routers/views.js');
 const meetings = require('./routers/meetings.js');
 const resources = require('./routers/resources.js');
-const forms = require('./routers/forms.js');
+const forms = require('./routers/meetingForms.js');
 const errorHandler = require('./routers/errorHandler.js');
 
 class WebServer {

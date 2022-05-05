@@ -11,6 +11,14 @@ class ResourceService {
         return await Room.find({});
     }
 
+    async findRoomByCode(code) {
+        return await Room.findOne({ code });
+    }
+
+    async findRoomById(id) {
+        return await Room.findById(id);
+    }
+
     async findAllUsers() {
         return await User.find({});
     }
